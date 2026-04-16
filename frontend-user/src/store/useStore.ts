@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { ToastMessage, UserAnswer } from '../types'
+import { ToastMessage, UserAnswer, ExamRecord, Certificate } from '../types'
 
 interface AppState {
   // 收藏
@@ -23,6 +23,17 @@ interface AppState {
   toasts: ToastMessage[]
   addToast: (toast: Omit<ToastMessage, 'id'>) => void
   removeToast: (id: string) => void
+
+  // 考试记录
+  examRecords: ExamRecord[]
+  addExamRecord: (record: ExamRecord) => void
+  getLatestExamRecord: () => ExamRecord | undefined
+
+  // 证书
+  certificates: Certificate[]
+  addCertificate: (certificate: Certificate) => void
+  getCertificateByExamId: (examId: string) => Certificate | undefined
+  hasCertificate: () => boolean
 }
 
 export const useStore = create<AppState>()(
@@ -87,12 +98,41 @@ export const useStore = create<AppState>()(
           toasts: state.toasts.filter((t) => t.id !== id),
         }))
       },
+
+      // 考试记录
+      examRecords: [],
+      addExamRecord: (record: ExamRecord) => {
+        set((state) => ({
+          examRecords: [...state.examRecords, record],
+        }))
+      },
+      getLatestExamRecord: () => {
+        const records = get().examRecords
+        return records.length > 0 ? records[records.length - 1] : undefined
+      },
+
+      // 证书
+      certificates: [],
+      addCertificate: (certificate: Certificate) => {
+        set((state) => ({
+          certificates: [...state.certificates, certificate],
+        }))
+        get().addToast({ type: 'success', message: '恭喜您获得Excel函数技能证书！' })
+      },
+      getCertificateByExamId: (examId: string) => {
+        return get().certificates.find((c) => c.examId === examId)
+      },
+      hasCertificate: () => {
+        return get().certificates.length > 0
+      },
     }),
     {
       name: 'excel-helper-storage',
       partialize: (state) => ({
         favorites: state.favorites,
         userAnswers: state.userAnswers,
+        examRecords: state.examRecords,
+        certificates: state.certificates,
       }),
     }
   )

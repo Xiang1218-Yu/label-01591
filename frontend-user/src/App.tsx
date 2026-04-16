@@ -5,6 +5,8 @@ import CategoryPage from './pages/CategoryPage'
 import FunctionDetailPage from './pages/FunctionDetailPage'
 import PracticePage from './pages/PracticePage'
 import FavoritesPage from './pages/FavoritesPage'
+import ExamPage from './pages/ExamPage'
+import CertificatePage from './pages/CertificatePage'
 import { Toaster } from './components/Toast'
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
           <Route path="/function/:functionId" element={<FunctionDetailPage />} />
           <Route path="/practice" element={<PracticePage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/exam" element={<ExamPage />} />
+          <Route path="/certificate" element={<CertificatePage />} />
         </Routes>
       </Layout>
       <Toaster />
