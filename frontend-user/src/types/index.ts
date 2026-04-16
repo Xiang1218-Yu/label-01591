@@ -72,3 +72,45 @@ export interface ToastMessage {
   message: string
   duration?: number
 }
+
+// 考试题目
+export interface ExamQuestion {
+  id: string
+  question: string
+  options: string[]
+  correctAnswer: number
+  functionName: string
+  difficulty: 1 | 2 | 3
+  explanation: string
+}
+
+// 考试记录
+export interface ExamRecord {
+  id: string
+  score: number
+  totalQuestions: number
+  passed: boolean
+  completedAt: Date
+  answers: {
+    questionId: string
+    userAnswer: number
+    isCorrect: boolean
+  }[]
+}
+
+// 证书信息
+export interface Certificate {
+  id: string
+  examRecordId: string
+  score: number
+  level: 'bronze' | 'silver' | 'gold'
+  issuedAt: Date
+  certificateNumber: string
+}
+
+// 证书等级配置
+export const CERTIFICATE_LEVELS = {
+  bronze: { minScore: 60, name: '青铜证书', color: '#CD7F32' },
+  silver: { minScore: 80, name: '白银证书', color: '#C0C0C0' },
+  gold: { minScore: 95, name: '黄金证书', color: '#FFD700' },
+}
