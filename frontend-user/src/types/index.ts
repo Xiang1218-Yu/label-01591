@@ -72,3 +72,43 @@ export interface ToastMessage {
   message: string
   duration?: number
 }
+
+// 考试题目类型
+export interface ExamQuestion {
+  id: string
+  question: string
+  options: string[]
+  correctAnswer: number
+  functionName: string
+  difficulty: 1 | 2 | 3
+  explanation: string
+}
+
+// 考试记录
+export interface ExamRecord {
+  id: string
+  score: number
+  totalQuestions: number
+  correctCount: number
+  passed: boolean
+  examDate: Date
+  answers: ExamAnswer[]
+}
+
+// 考试答题记录
+export interface ExamAnswer {
+  questionId: string
+  userAnswer: number
+  isCorrect: boolean
+}
+
+// 证书信息
+export interface Certificate {
+  id: string
+  certificateNumber: string
+  userName: string
+  score: number
+  issueDate: Date
+  examId: string
+  level: '初级' | '中级' | '高级'
+}
