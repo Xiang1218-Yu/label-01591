@@ -72,7 +72,7 @@ const CertificatePage = () => {
 
     // 生成证书信息
     const cert: Certificate = {
-      id: `cert_${Date.now()}`,
+      id: `cert_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`, // 确保ID唯一
       userId: 'user_001', // 这里可以替换为实际用户ID
       userName: '用户', // 这里可以替换为实际用户名
       certificateName: 'Excel函数技能认证证书',
@@ -85,9 +85,17 @@ const CertificatePage = () => {
 
     setCertificate(cert)
 
-    // 保存证书到localStorage
-    const existingCertificates = JSON.parse(localStorage.getItem('certificates') || '[]')
-    localStorage.setItem('certificates', JSON.stringify([...existingCertificates, cert]))
+    // 保存证书到localStorage，避免重复添加
+    const existingCertificates = JSON.parse(localStorage.getItem('certificates') || '[]') as Certificate[]
+    // 检查是否已经存在该考试对应的证书，避免重复
+    const isCertificateExists = existingCertificates.some(c => 
+      c.certificateNumber === cert.certificateNumber || 
+      c.id.includes(result.id)
+    )
+    
+    if (!isCertificateExists) {
+      localStorage.setItem('certificates', JSON.stringify([...existingCertificates, cert]))
+    }
 
     setLoading(false)
   }, [examId, navigate])

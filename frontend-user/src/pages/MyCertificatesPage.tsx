@@ -9,9 +9,27 @@ const MyCertificatesPage = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // 从localStorage获取用户所有证书
+    // 从localStorage获取用户所有证书并去重
     const savedCertificates = JSON.parse(localStorage.getItem('certificates') || '[]') as Certificate[]
-    setCertificates(savedCertificates)
+    
+    // 去重处理，根据证书ID或证书编号去重
+    const uniqueCertificates = savedCertificates.reduce((acc, current) => {
+      const isDuplicate = acc.find(item => 
+        item.id === current.id || 
+        item.certificateNumber === current.certificateNumber
+      )
+      if (!isDuplicate) {
+        acc.push(current)
+      }
+      return acc
+    }, [] as Certificate[])
+    
+    // 如果有重复数据，更新localStorage
+    if (uniqueCertificates.length !== savedCertificates.length) {
+      localStorage.setItem('certificates', JSON.stringify(uniqueCertificates))
+    }
+    
+    setCertificates(uniqueCertificates)
     setLoading(false)
   }, [])
 
