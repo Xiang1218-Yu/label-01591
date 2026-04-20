@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Home, BookOpen, Heart, GraduationCap } from 'lucide-react'
+import { Home, BookOpen, Heart, GraduationCap, Award, FileBadge } from 'lucide-react'
 import clsx from 'clsx'
 
 interface LayoutProps {
@@ -10,6 +10,8 @@ interface LayoutProps {
 const navItems = [
   { path: '/', icon: Home, label: '首页' },
   { path: '/practice', icon: GraduationCap, label: '练习' },
+  { path: '/exam', icon: Award, label: '考试' },
+  { path: '/my-certificates', icon: FileBadge, label: '我的证书' },
   { path: '/favorites', icon: Heart, label: '收藏' },
 ]
 
